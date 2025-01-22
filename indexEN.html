@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet"
+    href="./node_modules/@smals-belgium-shared/vitalink-webcomponents/VitalinkCarePlanTable/0.0.1/styles.css" />
+</head>
+
+<body>
+  <form id="parameter-form">
+    <label for="auth-token">Auth Token:</label>
+    <input type="text" id="auth-token" name="auth-token" placeholder="Enter auth token" required />
+    <br />
+
+    <label for="patient-identifier">Peudonym:</label>
+    <input type="text" id="patient-identifier" name="patient-identifier" placeholder="Enter patient identifier" required />
+    <br />
+
+    <button type="submit">Submit</button>
+  </form>
+
+  <vitalink-care-plan-table server="https://apps-acpt.vitalink-services.be/vault/api/r4"
+    auth-token=""
+    patient-identifier=""
+    language="en"></vitalink-care-plan-table>
+
+  <script src="./node_modules/@smals-belgium-shared/vitalink-webcomponents/VitalinkCarePlanTable/0.0.1/main.js"></script>
+  <script>
+    const form = document.getElementById('parameter-form');
+    const carePlanTable = document.querySelector('vitalink-care-plan-table');
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault(); // Prevent form from reloading the page
+
+      const authToken = document.getElementById('auth-token').value;
+      const patientIdentifier = document.getElementById('patient-identifier').value;
+
+      carePlanTable.setAttribute('auth-token', authToken);
+      carePlanTable.setAttribute('patient-identifier', 'https://www.ehealth.fgov.be/standards/fhir/core/NamingSystem/ssin|urn:be:fgov:ehealth:pseudo:v1:' + patientIdentifier);
+    });
+  </script>
+</body>
+
+</html>
