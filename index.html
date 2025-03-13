@@ -16,12 +16,27 @@
       background-color: #f0f0f0;
     }
 
+    .parent {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      /* Centers the boxes horizontally */
+      gap: 20px;
+      /* Adds spacing between the boxes */
+    }
+
     .container {
+      display: block;
+      /* Ensures the boxes stack */
+      width: 800px;
+      height: 250px;
       text-align: center;
       background: white;
       padding: 20px;
       border-radius: 8px;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+      /* Adds space between stacked boxes */
     }
 
     h1 {
@@ -46,18 +61,19 @@
 </head>
 
 <body>
-  <div class="container">
-    <h1>Vitalink CarePlan webcomponent test page</h1>
-    <p>Select your preferred language to proceed:</p>
-    <a href="indexNL.html">Nederlands</a>
-    <a href="indexFR.html">Français</a>
-    <a href="indexEN.html">English</a>
-    <a href="indexDE.html">Deutsch</a>
-  </div>
-  <BR>
-  <div class="container">
-    <h1>Vitalink AuditTrail webcomponent test page</h1>
-    <a href="audit.html">Component</a>
+  <div class="parent">
+    <div class="container">
+      <h1>Vitalink CarePlan webcomponent test page</h1>
+      <p>Select your preferred language to proceed:</p>
+      <a href="indexNL.html">Nederlands</a>
+      <a href="indexFR.html">Français</a>
+      <a href="indexEN.html">English</a>
+      <a href="indexDE.html">Deutsch</a>
+    </div>
+    <div class="container">
+      <h1>Vitalink AuditTrail webcomponent test page</h1>
+      <a href="audit.html">Component</a>
+    </div>
   </div>
 </body>
 
