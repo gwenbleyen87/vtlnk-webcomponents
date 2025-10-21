@@ -1,72 +1,46 @@
-<!DOCTYPE html>
-<html lang="fr">
+<form id="parameter-form">
+  <label for="auth-token">Auth Token:</label>
+  <input id="auth-token" name="auth-token" required>
 
-<head>
-  <meta charset="UTF-8" />
+  <label for="patient-identifier">Pseudonym:</label>
+  <input id="patient-identifier" name="patient-identifier" required>
 
-  <title>Vitalink Vaccination Table</title>
-</head>
+  <button type="submit">Submit</button>
+  <a href="index.html">Home</a>
+</form>
 
-<body>
-  <form id="parameter-form">
-    <label for="auth-token">Auth Token:</label>
-    <input type="text" id="auth-token" name="auth-token" placeholder="Enter auth token" required />
-    <br />
+<div id="vaccination-container"></div>
 
-    <label for="patient-identifier">Pseudonym:</label>
-    <input type="text" id="patient-identifier" name="patient-identifier" placeholder="Enter patient identifier"
-      required />
-    <br />
+<!-- Ensure the component script loads correctly -->
+<script type="module" defer src="node_modules/@smals-belgium-shared/vitalink-webcomponents/VitalinkVaccinationTable/0.0.5/main.js"></script>
 
-    <button type="submit">Submit</button>
-    <a href="index.html">Home</a>
-  </form>
+<script>
+  const form = document.getElementById('parameter-form');
+  const container = document.getElementById('vaccination-container');
 
-  <!-- Container where the vaccination table will be inserted -->
-  <div id="vaccination-container">
-    <vitalink-vaccination-table id="vaccination-table"
-      server="https://apps-acpt.vitalink-services.be/vault/api/r4"
-      auth-token=""
-      patient-identifier=""
-      patient-ssin="87051423939"
-      patient-full-name="Gwen Bleyen"
-      language="nl">
-    </vitalink-vaccination-table>
-  </div>
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
 
-  <script
-    src="node_modules/@smals-belgium-shared/vitalink-webcomponents/VitalinkVaccinationTable/0.0.5/main.js"></script>
+    const authToken = document.getElementById('auth-token').value.trim();
+    const patientIdentifier = document.getElementById('patient-identifier').value.trim();
 
-  <script>
-    const form = document.getElementById('parameter-form');
-    const container = document.getElementById('vaccination-container');
+    // Wait until the custom element is ready
+    await customElements.whenDefined('vitalink-vaccination-table');
 
-    form.addEventListener('submit', (event) => {
-      event.preventDefault();
+    // Remove existing component
+    const existingTable = container.querySelector('vitalink-vaccination-table');
+    if (existingTable) existingTable.remove();
 
-      const authToken = document.getElementById('auth-token').value;
-      const patientIdentifier = document.getElementById('patient-identifier').value;
+    // Create and configure a new component (try properties first)
+    const table = document.createElement('vitalink-vaccination-table');
+    table.server = 'https://apps-acpt.vitalink-services.be/vault/api/r4';
+    table.authToken = authToken;
+    table.patientIdentifier =
+      'https://www.ehealth.fgov.be/standards/fhir/core/NamingSystem/ssin|urn:be:fgov:ehealth:pseudo:v1:' + patientIdentifier;
+    table.patientSsin = '87051423939';
+    table.patientFullName = 'Gwen Bleyen';
+    table.language = 'nl';
 
-      // Remove existing component
-      const existingTable = document.querySelector('vitalink-vaccination-table');
-      if (existingTable) existingTable.remove();
-
-      // Create new vaccination table element
-      const newTable = document.createElement('vitalink-vaccination-table');
-      newTable.setAttribute('server', 'https://apps-acpt.vitalink-services.be/vault/api/r4');
-      newTable.setAttribute('auth-token', authToken);
-      newTable.setAttribute(
-        'patient-identifier',
-        'https://www.ehealth.fgov.be/standards/fhir/core/NamingSystem/ssin|urn:be:fgov:ehealth:pseudo:v1:' + patientIdentifier
-      );
-      newTable.setAttribute('patient-ssin', '87051423939');
-      newTable.setAttribute('patient-full-name', 'Gwen Bleyen');
-      newTable.setAttribute('language', 'nl');
-
-      // Insert the new table into the container
-      container.appendChild(newTable);
-    });
-  </script>
-</body>
-
-</html>
+    container.appendChild(table);
+  });
+</script>
