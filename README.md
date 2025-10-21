@@ -1,5 +1,5 @@
 # vitalink_webcomponents
-Vitalink webcomponents test page
+Vitalink webcomponents test page, based on https://www.npmjs.com/package/@smals-belgium-shared/vitalink-webcomponents
 
 ## Getting started
 1. Clone the repository in a desired location:
