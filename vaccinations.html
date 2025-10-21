@@ -6,6 +6,7 @@
 
   <title>Vitalink Vaccination Table</title>
 </head>
+<script src="node_modules/@smals-belgium-shared/vitalink-webcomponents/VitalinkVaccinationTable/0.0.5/main.js"></script>
 
 <body>
   <form id="parameter-form">
@@ -24,18 +25,12 @@
 
   <!-- Container where the vaccination table will be inserted -->
   <div id="vaccination-container">
-    <vitalink-vaccination-table id="vaccination-table"
-      server="https://apps-acpt.vitalink-services.be/vault/api/r4"
-      auth-token=""
-      patient-identifier=""
-      patient-ssin="87051423939"
-      patient-full-name="Gwen Bleyen"
-      language="nl">
+    <vitalink-vaccination-table id="vaccination-table" server="https://apps-acpt.vitalink-services.be/vault/api/r4"
+      auth-token="" patient-identifier="" patient-ssin="87051423939" patient-full-name="Gwen Bleyen" language="nl">
     </vitalink-vaccination-table>
   </div>
 
-  <script
-    src="node_modules/@smals-belgium-shared/vitalink-webcomponents/VitalinkVaccinationTable/0.0.5/main.js"></script>
+
 
   <script>
     const form = document.getElementById('parameter-form');
