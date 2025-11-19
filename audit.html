@@ -1,15 +1,106 @@
 <!DOCTYPE html>
 <html lang="nl">
   <head>
-    <meta charset="UTF-8" /> 
+    <meta charset="UTF-8" />
+    <title>Vitalink Audit Trail</title>
   </head>
+<style>
+  .back-button {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    background-color: #1976d2;
+    color: white;
+    padding: 10px 18px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+    transition: background-color 0.2s, transform 0.1s;
+    z-index: 9999;
+  }
+
+  .back-button:hover {
+    background-color: #125aa0;
+    transform: scale(1.03);
+  }
+
+  .back-button:active {
+    transform: scale(0.97);
+  }
+</style>
+
+  <script src="node_modules/@smals-belgium-shared/vitalink-webcomponents/VitalinkAuditTrailTable/0.0.4/main.js"></script>
+
   <body>
-    <vitalink-audit-trail-table
-      server="https://apps-acpt.vitalink-services.be/vault/api/r4"
-      patient-identifier="eyJ4IjoiQU12RWZpVW0zQzgrenRDQmI1M2h2dFJFaXlBNGsyaHRrT0FJdXo2UFIwZEVhekhxVW02RWIxQTZMYlBPRndodjVDcHhpc0F4VHkwY2hKSjBpVEY1TkZDVCIsInkiOiJBSmxTdWRWUlZzUVdsVzlqTDA5TkhVZDR0N1dnQk5XZklwdDdVcVUzSzBKcVdXTm1Wc3cvZzBlUEtIcEJ0V3VSTWE5a01UT0U4YXd2eGNJT0J6aE5VTWxIIiwidHJhbnNpdEluZm8iOiJleUpoZFdRaU9pSm9kSFJ3Y3pvdkwyRndhUzFoWTNCMExtVm9aV0ZzZEdndVptZHZkaTVpWlM5d2MyVjFaRzh2ZGpFdlpHOXRZV2x1Y3k5MmFYUmhiR2x1YTE5Mk1TSXNJbVZ1WXlJNklrRXlOVFpIUTAwaUxDSmxlSEFpT2pFM05EYzVPRFUxTmpVc0ltbGhkQ0k2TVRjME56azRORGsyTlN3aVlXeG5Jam9pWkdseUlpd2lhMmxrSWpvaU5URTBZemhpWW1FdE9HVTRNQzAwT1dKaExUZzBZVEl0WkdGbFpEZ3hPVGt4WmpFeEluMC4uYkRiNVM2cVpabXhoOWNFUS56NEN1OHZkZEZTOW84c282WkFUOUpLYzRhcXJWajVLNFFNeXdXVkdYcDNsa3pweGMtd2plQkJUUndlZ0hJbzRKcEl6MWVTUmNlNnU1YmZIc0JaeWMzcDU2eGdSX3JlSnBpcDR6YlJydjRkaDlMUjBQbExEWVZBY2p4cy14WmxSYVEwY29DTzFRWEtQT1hTd0ZpX3VjYnU5SXZOMTBzN29KdWt1ODhtMGo0VjFxYXppSE9rWncuRTlkQ2lSNU1NZWh1LTlPaUNhczVJQSIsImV4cCI6MTc0Nzk4NTU2NSwiaWF0IjoxNzQ3OTg0OTY1LCJjcnYiOiJQLTUyMSJ9"
-      auth-token="eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI3dnR2TmtqczBiSUdUSUVoLWtLRVY2WGt1VWx0czVlR3I1VHFBV0doQjFNIn0.eyJleHAiOjE3NDc5ODUyOTMsImlhdCI6MTc0Nzk4NDk5MywianRpIjoiNWI5YzhjOGQtMjNkNi00ZWJjLTljNDAtOGY1NWI2ZjQ0NTlhIiwiaXNzIjoiaHR0cHM6Ly9hcGktYWNwdC5laGVhbHRoLmZnb3YuYmUvYXV0aC9yZWFsbXMvTTJNIiwiYXVkIjoiZWhlYWx0aC1wc2V1ZG8tYXBpIiwic3ViIjoiMjM3OWIxY2ItMTFjYS00NzBkLWIxZDgtYzExNTliNzcyMjZmIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiY2JlLTA0MjUyNjA2NjgiLCJhbGxvd2VkLW9yaWdpbnMiOltdLCJyZXNvdXJjZV9hY2Nlc3MiOnsiZWhlYWx0aC1wc2V1ZG8tYXBpIjp7InJvbGVzIjpbInBzZXVkb255bWl6ZSJdfX0sInNjb3BlIjoicHNldWRvOmFwaTpwc2V1ZG9ueW1pemUgcHJvZmlsZSIsImNsaWVudEhvc3QiOiI4NC4xOTUuNS4zNiIsImNsaWVudElkIjoiY2JlLTA0MjUyNjA2NjgiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJjYmUtMDQyNTI2MDY2OCIsImNsaWVudEFkZHJlc3MiOiI4NC4xOTUuNS4zNiIsInVzZXJQcm9maWxlIjp7Im9yZ2FuaXphdGlvbnMiOlt7ImVudGVycHJpc2UiOnsiY2JlIjoiMDQyNTI2MDY2OCJ9LCJuYW1lIjoiSU1FQyJ9XX19.XaeOMIF24kEuuWsW--rva2w_TLj9aVwPOEP4RQGYesMLFYJma89wLMgZmkNcu1CfA5n1rxLjls9Wb96fJMQNCuYH74ZGdzf8G_mdwuwESOm1MR2sD4ytgBd5lgbohiZSLbShnN6atZt_aEjhlUkWf_KulLjQ6d-seQOg2WQjXe67-mOVqjlKQaX4bPecl1wEvCNQRAOAoFsNofV0poPxAbhlPg3iY0-101uu0pWMum3MkCOsIK8cJbCNlzN0ZzCNqe9yoQ8eGC767dAiq0mhrPOmSgKZPp_oaV0rsZlgQLuHxL_Ib_oKFTSa24jIXFu_kfIlr3bDBp2kIgsNE51G_w"
-      patient-ssin="SSIN"
-    ></vitalink-audit-trail-table>
-    <script src="node_modules/@smals-belgium-shared/vitalink-webcomponents/VitalinkAuditTrailTable/0.0.4/main.js"></script>
+<a href="index.html" class="back-button">⬅ Home</a>
+    <!-- === Form Input === -->
+    <form id="parameter-form">
+      <label for="auth-token">Auth Token:</label>
+      <input
+        type="text"
+        id="auth-token"
+        name="auth-token"
+        placeholder="Enter auth token"
+        required
+      />
+      <br />
+
+      <label for="patient-identifier">Pseudonym:</label>
+      <input
+        type="text"
+        id="patient-identifier"
+        name="patient-identifier"
+        placeholder="Enter patient identifier (pseudonym)"
+        required
+      />
+      <br />
+
+      <button type="submit">Load Audit Trail</button>
+    </form>
+
+    <hr />
+
+    <!-- === Container where the table will be inserted === -->
+    <div id="audit-container">
+      <!-- Initially empty -->
+    </div>
+
+    <script>
+      const form = document.getElementById("parameter-form");
+      const container = document.getElementById("audit-container");
+
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        const authToken = document.getElementById("auth-token").value;
+        const pseudonym = document.getElementById("patient-identifier").value;
+
+        // Remove existing table if it exists
+        const existingTable = document.querySelector("vitalink-audit-trail-table");
+        if (existingTable) existingTable.remove();
+
+        // Create a new table instance
+        const table = document.createElement("vitalink-audit-trail-table");
+
+        table.setAttribute("server", "https://apps-acpt.vitalink-services.be/vault/api/r4");
+        table.setAttribute("auth-token", authToken);
+
+        // Construct patient-identifier using Vitalink format
+        table.setAttribute(
+          "patient-identifier",
+          "https://www.ehealth.fgov.be/standards/fhir/core/NamingSystem/ssin|urn:be:fgov:ehealth:pseudo:v1:" + pseudonym
+        );
+
+        // Keep SSIN fixed (or move to the form if needed)
+        table.setAttribute("patient-ssin", "87051423939");
+
+        // Insert the table
+        container.appendChild(table);
+      });
+    </script>
+
   </body>
 </html>

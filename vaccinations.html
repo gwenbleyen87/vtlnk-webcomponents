@@ -1,67 +1,100 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="nl">
 
 <head>
-  <meta charset="UTF-8" />
+    <meta charset="UTF-8" />
+    <title>Vitalink Vaccination Table</title>
 
-  <title>Vitalink Vaccination Table</title>
+    <link rel="stylesheet"
+        href="node_modules/@smals-belgium-shared/vitalink-webcomponents/VitalinkVaccinationTable/0.0.5/styles.css" />
+    <script src="node_modules/@smals-belgium-shared/vitalink-webcomponents/VitalinkVaccinationTable/0.0.5/main.js"></script>
 </head>
-<script src="node_modules/@smals-belgium-shared/vitalink-webcomponents/VitalinkVaccinationTable/0.0.5/main.js"></script>
+<style>
+  .back-button {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    background-color: #1976d2;
+    color: white;
+    padding: 10px 18px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+    transition: background-color 0.2s, transform 0.1s;
+    z-index: 9999;
+  }
+
+  .back-button:hover {
+    background-color: #125aa0;
+    transform: scale(1.03);
+  }
+
+  .back-button:active {
+    transform: scale(0.97);
+  }
+</style>
 
 <body>
-  <form id="parameter-form">
-    <label for="auth-token">Auth Token:</label>
-    <input type="text" id="auth-token" name="auth-token" placeholder="Enter auth token" required />
-    <br />
+<a href="index.html" class="back-button">⬅ Home</a>
+    <!-- === FORM === -->
+    <form id="parameter-form">
+        <label for="auth-token">Auth Token:</label>
+        <input
+            type="text"
+            id="auth-token"
+            placeholder="Enter auth token"
+            required
+        />
+        <br />
 
-    <label for="patient-identifier">Pseudonym:</label>
-    <input type="text" id="patient-identifier" name="patient-identifier" placeholder="Enter patient identifier"
-      required />
-    <br />
+        <label for="patient-identifier">Pseudonym:</label>
+        <input
+            type="text"
+            id="patient-identifier"
+            placeholder="Enter patient identifier"
+            required
+        />
+        <br />
 
-    <button type="submit">Submit</button>
-    <a href="index.html">Home</a>
-  </form>
+        <button type="submit">Load Vaccination Table</button>
+    </form>
 
-  <!-- Container where the vaccination table will be inserted -->
-  <div id="vaccination-container">
-    <vitalink-vaccination-table id="vaccination-table" server="https://apps-acpt.vitalink-services.be/vault/api/r4"
-      auth-token="" patient-identifier="" patient-ssin="87051423939" patient-full-name="Gwen Bleyen" language="nl">
-    </vitalink-vaccination-table>
-  </div>
+    <hr />
 
+    <div id="vaccination-container"></div>
 
+    <script>
+        const form = document.getElementById("parameter-form");
+        const container = document.getElementById("vaccination-container");
 
-  <script>
-    const form = document.getElementById('parameter-form');
-    const container = document.getElementById('vaccination-container');
+        form.addEventListener("submit", (event) => {
+            event.preventDefault();
 
-    form.addEventListener('submit', (event) => {
-      event.preventDefault();
+            const authToken = document.getElementById("auth-token").value;
+            const pseudonym = document.getElementById("patient-identifier").value;
 
-      const authToken = document.getElementById('auth-token').value;
-      const patientIdentifier = document.getElementById('patient-identifier').value;
+            // Remove old table
+            const old = document.querySelector("vitalink-vaccination-table");
+            if (old) old.remove();
 
-      // Remove existing component
-      const existingTable = document.querySelector('vitalink-vaccination-table');
-      if (existingTable) existingTable.remove();
+            // Create new table
+            const table = document.createElement("vitalink-vaccination-table");
 
-      // Create new vaccination table element
-      const newTable = document.createElement('vitalink-vaccination-table');
-      newTable.setAttribute('server', 'https://apps-acpt.vitalink-services.be/vault/api/r4');
-      newTable.setAttribute('auth-token', authToken);
-      newTable.setAttribute(
-        'patient-identifier',
-        'https://www.ehealth.fgov.be/standards/fhir/core/NamingSystem/ssin|urn:be:fgov:ehealth:pseudo:v1:' + patientIdentifier
-      );
-      newTable.setAttribute('patient-ssin', '87051423939');
-      newTable.setAttribute('patient-full-name', 'Gwen Bleyen');
-      newTable.setAttribute('language', 'nl');
+            table.setAttribute("server", "https://apps-acpt.vitalink-services.be/vault/api/r4");
+            table.setAttribute(
+                "patient-identifier",
+                "https://www.ehealth.fgov.be/standards/fhir/core/NamingSystem/ssin|urn:be:fgov:ehealth:pseudo:v1:" + pseudonym
+            );
+            table.setAttribute("auth-token", authToken);
+            table.setAttribute("patient-ssin", "87051423939");
+            table.setAttribute("patient-full-name", "Gwen Bleyen");
 
-      // Insert the new table into the container
-      container.appendChild(newTable);
-    });
-  </script>
+            container.appendChild(table);
+        });
+    </script>
+
 </body>
-
 </html>
