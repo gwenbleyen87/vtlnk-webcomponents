@@ -15,3 +15,4 @@ Vitalink webcomponents test page, based on https://www.npmjs.com/package/@smals-
 OR
 
 ```docker buildx build --platform linux/arm64 -t gwenbleyen/vitalink-webcomponents:arm64 --push .```
+# vitalink-webcomponents
