@@ -1,100 +1,55 @@
 <!DOCTYPE html>
-<html lang="nl">
-
-<head>
+<html lang="en">
+  <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vitalink Vaccination Table</title>
-
+    <link rel="stylesheet" href="styles.css" />
     <script src="node_modules/@smals-belgium-shared/vitalink-webcomponents/VitalinkVaccinationTable/0.0.9/main.js"></script>
-</head>
-<style>
-  .back-button {
-    position: fixed;
-    top: 15px;
-    right: 15px;
-    background-color: #1976d2;
-    color: white;
-    padding: 10px 18px;
-    border-radius: 6px;
-    text-decoration: none;
-    font-family: Arial, sans-serif;
-    font-size: 14px;
-    font-weight: bold;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.25);
-    transition: background-color 0.2s, transform 0.1s;
-    z-index: 9999;
-  }
+  </head>
+  <body>
+    <a href="index.html" class="back-button">Back to home</a>
+    <main class="page">
+      <h1>Vitalink Vaccination webcomponent</h1>
+      <form id="vaccination-form" class="parameter-form">
+        <label for="auth-token">Auth token</label>
+        <input type="text" id="auth-token" placeholder="Bearer token" required />
 
-  .back-button:hover {
-    background-color: #125aa0;
-    transform: scale(1.03);
-  }
+        <label for="patient-pseudonym">Patient pseudonym</label>
+        <input type="text" id="patient-pseudonym" placeholder="Pseudo ID" required />
 
-  .back-button:active {
-    transform: scale(0.97);
-  }
-</style>
+        <label for="patient-ssin">Patient SSIN</label>
+        <input type="text" id="patient-ssin" placeholder="11-digit SSIN" required />
 
-<body>
-<a href="index.html" class="back-button">⬅ Home</a>
-    <!-- === FORM === -->
-    <form id="parameter-form">
-        <label for="auth-token">Auth Token:</label>
+        <label for="patient-full-name">Patient full name</label>
+        <input type="text" id="patient-full-name" placeholder="Patient Full Name" required />
+
+        <label for="view">View</label>
+        <select id="view">
+          <option value="citizen">citizen</option>
+          <option value="caregiver">caregiver</option>
+        </select>
+
+        <label for="security-label">Security label (optional)</label>
         <input
-            type="text"
-            id="auth-token"
-            placeholder="Enter auth token"
-            required
+          type="text"
+          id="security-label"
+          placeholder="https://www.apps.vitalink-services.be|PUBLIC_HEALTH"
+          value="https://www.apps.vitalink-services.be|PUBLIC_HEALTH"
         />
-        <br />
 
-        <label for="patient-identifier">Pseudonym:</label>
-        <input
-            type="text"
-            id="patient-identifier"
-            placeholder="Enter patient identifier"
-            required
-        />
-        <br />
+        <button type="submit">Load Vaccination table</button>
+      </form>
 
-        <button type="submit">Load Vaccination Table</button>
-    </form>
+      <div id="vaccination-container"></div>
+    </main>
 
-    <hr />
-
-    <div id="vaccination-container"></div>
-
+    <script src="webcomponent-pages.js"></script>
     <script>
-        const form = document.getElementById("parameter-form");
-        const container = document.getElementById("vaccination-container");
-
-        form.addEventListener("submit", (event) => {
-            event.preventDefault();
-
-            const authToken = document.getElementById("auth-token").value;
-            const pseudonym = document.getElementById("patient-identifier").value;
-
-            // Remove old table
-            const old = document.querySelector("vitalink-vaccination-table");
-            if (old) old.remove();
-
-            // Create new table
-            const table = document.createElement("vitalink-vaccination-table");
-
-            table.setAttribute("server", "https://apps-acpt.vitalink-services.be/vault/api/r4");
-            table.setAttribute(
-                "patient-identifier",
-                "https://www.ehealth.fgov.be/standards/fhir/core/NamingSystem/ssin|urn:be:fgov:ehealth:pseudo:v1:" + pseudonym
-            );
-            table.setAttribute("auth-token", authToken);
-            table.setAttribute("patient-ssin", "87051423939");
-            table.setAttribute("patient-full-name", "Gwen Bleyen");
-            table.setAttribute("security-label", "https://www.apps.vitalink-services.be|PUBLIC_HEALTH");
-
-
-            container.appendChild(table);
-        });
+      setupVaccinationPage({
+        formId: "vaccination-form",
+        containerId: "vaccination-container",
+      });
     </script>
-
-</body>
+  </body>
 </html>

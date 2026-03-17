@@ -1,107 +1,46 @@
 <!DOCTYPE html>
-<html lang="nl">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vitalink Audit Trail</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="node_modules/@smals-belgium-shared/vitalink-webcomponents/VitalinkAuditTrailTable/0.0.7/main.js"></script>
   </head>
-<style>
-  .back-button {
-    position: fixed;
-    top: 15px;
-    right: 15px;
-    background-color: #1976d2;
-    color: white;
-    padding: 10px 18px;
-    border-radius: 6px;
-    text-decoration: none;
-    font-family: Arial, sans-serif;
-    font-size: 14px;
-    font-weight: bold;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.25);
-    transition: background-color 0.2s, transform 0.1s;
-    z-index: 9999;
-  }
-
-  .back-button:hover {
-    background-color: #125aa0;
-    transform: scale(1.03);
-  }
-
-  .back-button:active {
-    transform: scale(0.97);
-  }
-</style>
-
-  <script src="node_modules/@smals-belgium-shared/vitalink-webcomponents/VitalinkAuditTrailTable/0.0.7/main.js"></script>
-
   <body>
-<a href="index.html" class="back-button">⬅ Home</a>
-    <!-- === Form Input === -->
-    <form id="parameter-form">
-      <label for="auth-token">Auth Token:</label>
-      <input
-        type="text"
-        id="auth-token"
-        name="auth-token"
-        placeholder="Enter auth token"
-        required
-      />
-      <br />
+    <a href="index.html" class="back-button">Back to home</a>
+    <main class="page">
+      <h1>Vitalink AuditTrail webcomponent</h1>
+      <form id="audit-form" class="parameter-form">
+        <label for="auth-token">Auth token</label>
+        <input type="text" id="auth-token" placeholder="Bearer token" required />
 
-      <label for="patient-identifier">Pseudonym:</label>
-      <input
-        type="text"
-        id="patient-identifier"
-        name="patient-identifier"
-        placeholder="Enter patient identifier (pseudonym)"
-        required
-      />
-      <br />
+        <label for="patient-pseudonym">Patient pseudonym</label>
+        <input type="text" id="patient-pseudonym" placeholder="Pseudo ID" required />
 
-      <button type="submit">Load Audit Trail</button>
-    </form>
+        <label for="patient-ssin">Patient SSIN</label>
+        <input type="text" id="patient-ssin" placeholder="11-digit SSIN" required />
 
-    <hr />
+        <label for="security-label">Security label (optional)</label>
+        <input
+          type="text"
+          id="security-label"
+          placeholder="https://www.apps.vitalink-services.be|PUBLIC_HEALTH"
+          value="https://www.apps.vitalink-services.be|PUBLIC_HEALTH"
+        />
 
-    <!-- === Container where the table will be inserted === -->
-    <div id="audit-container">
-      <!-- Initially empty -->
-    </div>
+        <button type="submit">Load Audit Trail table</button>
+      </form>
 
+      <div id="audit-container"></div>
+    </main>
+
+    <script src="webcomponent-pages.js"></script>
     <script>
-      const form = document.getElementById("parameter-form");
-      const container = document.getElementById("audit-container");
-
-      form.addEventListener("submit", (event) => {
-        event.preventDefault();
-
-        const authToken = document.getElementById("auth-token").value;
-        const pseudonym = document.getElementById("patient-identifier").value;
-
-        // Remove existing table if it exists
-        const existingTable = document.querySelector("vitalink-audit-trail-table");
-        if (existingTable) existingTable.remove();
-
-        // Create a new table instance
-        const table = document.createElement("vitalink-audit-trail-table");
-
-        table.setAttribute("server", "https://apps-acpt.vitalink-services.be/vault/api/r4");
-        table.setAttribute("auth-token", authToken);
-
-        // Construct patient-identifier using Vitalink format
-        table.setAttribute(
-          "patient-identifier",
-          "https://www.ehealth.fgov.be/standards/fhir/core/NamingSystem/ssin|urn:be:fgov:ehealth:pseudo:v1:" + pseudonym
-        );
-
-        // Keep SSIN fixed (or move to the form if needed)
-        table.setAttribute("patient-ssin", "87051423939");
-        table.setAttribute("security-label", "https://www.apps.vitalink-services.be|PUBLIC_HEALTH");
-
-        // Insert the table
-        container.appendChild(table);
+      setupAuditPage({
+        formId: "audit-form",
+        containerId: "audit-container",
       });
     </script>
-
   </body>
 </html>

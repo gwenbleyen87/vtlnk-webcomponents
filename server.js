@@ -1,6 +1,6 @@
-var connect = require('connect');
-var serveStatic = require('serve-static');
+const connect = require("connect");
+const serveStatic = require("serve-static");
 
 connect()
-    .use(serveStatic(__dirname, { index: ['index.html', 'index.htm'] }))
-    .listen(3001, () => console.log('Server running on 3001...'));
+  .use(serveStatic(__dirname, { index: ["index.html", "index.htm"] }))
+  .listen(3001, () => console.log("Server running on port 3001"));
