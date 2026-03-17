@@ -5,9 +5,7 @@
     <meta charset="UTF-8" />
     <title>Vitalink Vaccination Table</title>
 
-    <link rel="stylesheet"
-        href="node_modules/@smals-belgium-shared/vitalink-webcomponents/VitalinkVaccinationTable/0.0.8/styles.css" />
-    <script src="node_modules/@smals-belgium-shared/vitalink-webcomponents/VitalinkVaccinationTable/0.0.8/main.js"></script>
+    <script src="node_modules/@smals-belgium-shared/vitalink-webcomponents/VitalinkVaccinationTable/0.0.9/main.js"></script>
 </head>
 <style>
   .back-button {
@@ -91,6 +89,8 @@
             table.setAttribute("auth-token", authToken);
             table.setAttribute("patient-ssin", "87051423939");
             table.setAttribute("patient-full-name", "Gwen Bleyen");
+            table.setAttribute("security-label", "https://www.apps.vitalink-services.be|PUBLIC_HEALTH");
+
 
             container.appendChild(table);
         });
