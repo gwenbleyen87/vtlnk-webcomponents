@@ -32,7 +32,7 @@
   }
 </style>
 
-  <script src="node_modules/@smals-belgium-shared/vitalink-webcomponents/VitalinkAuditTrailTable/0.0.6/main.js"></script>
+  <script src="node_modules/@smals-belgium-shared/vitalink-webcomponents/VitalinkAuditTrailTable/0.0.7/main.js"></script>
 
   <body>
 <a href="index.html" class="back-button">⬅ Home</a>
@@ -96,6 +96,7 @@
 
         // Keep SSIN fixed (or move to the form if needed)
         table.setAttribute("patient-ssin", "87051423939");
+        table.setAttribute("security-label", "https://www.apps.vitalink-services.be|PUBLIC_HEALTH");
 
         // Insert the table
         container.appendChild(table);

@@ -25,7 +25,7 @@
     patient-identifier=""
     language="fr"></vitalink-care-plan-table>
 
-  <script src="./node_modules/@smals-belgium-shared/vitalink-webcomponents/VitalinkCarePlanTable/0.0.9/main.js"></script>
+  <script src="./node_modules/@smals-belgium-shared/vitalink-webcomponents/VitalinkCarePlanTable/0.0.10/main.js"></script>
   <script>
     const form = document.getElementById('parameter-form');
     const carePlanTable = document.querySelector('vitalink-care-plan-table');
@@ -38,6 +38,7 @@
 
       carePlanTable.setAttribute('auth-token', authToken);
       carePlanTable.setAttribute('patient-identifier', 'https://www.ehealth.fgov.be/standards/fhir/core/NamingSystem/ssin|urn:be:fgov:ehealth:pseudo:v1:' + patientIdentifier);
+      carePlanTable.setAttribute("security-label", "https://www.apps.vitalink-services.be|PUBLIC_HEALTH");
     });
   </script>
 </body>
